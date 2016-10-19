@@ -448,6 +448,7 @@ class ConfigCat(object):
         self.__name = name
         name = 'categories,' + name
 
+        self.order = OptionNumber(name, 'order', 0, 0, 100, add=False)
         self.pp = OptionStr(name, 'pp', '', add=False)
         self.script = OptionStr(name, 'script', 'Default', add=False)
         self.dir = OptionDir(name, 'dir', add=False, create=False)
@@ -471,6 +472,7 @@ class ConfigCat(object):
         """ Return a dictionary with all attributes """
         dict = {}
         dict['name'] = self.__name
+        dict['order'] = self.order()
         dict['pp'] = self.pp()
         dict['script'] = self.script()
         dict['dir'] = self.dir()
@@ -919,6 +921,9 @@ def get_categories(cat=0):
             cats = cats[cat]
         except KeyError:
             cats = cats['*']
+
+    cats = sorted(cats, key=attrgetter('age'))
+
     return cats
 
 
